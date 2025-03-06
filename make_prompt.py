@@ -59,7 +59,6 @@ def main():
             '*node_modules*',
             '*types.d.ts',
             '*.nuxt*',
-            '*.js',
             '*.json',
             '*pnpm-lock.yaml',
             '*.ico',
@@ -67,11 +66,6 @@ def main():
             '*api/models*',
             '*docs*',
 
-            '*/checkin*',
-            '*/dayend*',
-            # '*/diary*',
-            '*/goals*',
-            '*/sqlc*',
         ], 
         help="Шаблоны для исключения файлов и папок"
     )

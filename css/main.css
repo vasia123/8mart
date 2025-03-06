@@ -1,10 +1,14 @@
+@import 'hint-modal.css';
 /* Современные стили для детективной игры */
+
 
 :root {
     --primary-color: #e84a5f;
     --primary-dark: #c8374a;
     --secondary-color: #ff847c;
+    --secondary-dark: #e84a5f;
     --accent-color: #feceab;
+    --accent-dark: #e5b89a;
     --dark-color: #2a363b;
     --light-color: #fff8f0;
     --bg-color: #fef6eb;

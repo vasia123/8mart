@@ -1,9 +1,9 @@
 /**
  * Мини-игра "Весенний сапер"
- * Исправленная версия с корректной обработкой флажков
+ * Исправленная версия с корректной обработкой флажков и интеграцией hint-modal
  */
 class MinesweeperGame {
-    constructor() {
+    constructor(container) {
         this._rows = 8;
         this._cols = 8;
         this._flowers = 10;
@@ -11,13 +11,23 @@ class MinesweeperGame {
         this._revealed = [];
         this._flagged = [];
         this._gameOver = false;
-        this._container = null;
+        this._container = container;
         this._completeCallback = null;
         this._firstClick = true;
         this._theme = '8march';
         this._longPressTimers = {};
         this._isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
         this._flaggedCells = new Set(); // Отслеживаем ячейки с флажками для предотвращения нажатий
+        this._nextHint = null; // Для хранения текста подсказки
+    }
+    
+    /**
+     * Устанавливает текст следующей подсказки
+     * @param {string} hintText - Текст подсказки
+     */
+    setNextHint(hintText) {
+        this._nextHint = hintText;
+        return this; // Для цепочки вызовов
     }
     
     init(containerId, options = {}) {
@@ -46,7 +56,6 @@ class MinesweeperGame {
             this._theme = options.theme;
         }
         
-        this._container = document.getElementById(containerId);
         if (!this._container) {
             console.error('Контейнер не найден');
             return;
@@ -64,6 +73,7 @@ class MinesweeperGame {
             <div class="game-controls">
                 <span class="flowers-counter">🌷 ${this._flowers}</span>
                 <button class="reset-button">Начать заново</button>
+                <button class="rules-button">Правила</button>
             </div>
         `;
         this._container.appendChild(header);
@@ -82,6 +92,9 @@ class MinesweeperGame {
         // Добавляем обработчик для кнопки сброса
         header.querySelector('.reset-button').addEventListener('click', () => this._resetGame());
         
+        // Добавляем обработчик для кнопки правил
+        header.querySelector('.rules-button').addEventListener('click', () => this._showRules());
+        
         // Инициализируем пустые массивы для состояния игры
         this._revealed = Array(this._rows).fill().map(() => Array(this._cols).fill(false));
         this._flagged = Array(this._rows).fill().map(() => Array(this._cols).fill(false));
@@ -89,6 +102,30 @@ class MinesweeperGame {
         // Создаем игровое поле
         this._createBoard();
         this._renderBoard();
+    }
+    
+    /**
+     * Показывает правила игры с использованием модального окна
+     * @private
+     */
+    _showRules() {
+        // Текст правил
+        const rulesText = `
+- Найдите все безопасные клетки, но избегайте цветов (${this._flowers} шт.)
+- Нажмите на клетку, чтобы открыть её
+- Числа показывают, сколько цветов находится рядом
+- Используйте правую кнопку мыши или долгое нажатие на мобильном, чтобы пометить предполагаемый цветок флажком
+- Если открыть клетку с цветком - проигрыш
+- Для победы нужно открыть все безопасные клетки или пометить флажками все цветы
+        `;
+        
+        // Проверяем доступность модального окна
+        if (typeof hintModal !== 'undefined') {
+            hintModal.showRules(rulesText);
+        } else {
+            // Если модальное окно недоступно, показываем альтернативное сообщение
+            alert('Правила игры:\n' + rulesText);
+        }
     }
     
     _createBoard() {
@@ -344,7 +381,17 @@ class MinesweeperGame {
             this._revealed[row][col] = true;
             this._gameOver = true;
             this._revealAll();
-            this._showMessage('О нет! Вы нашли цветок слишком рано. Попробуйте еще раз!', 'error');
+            
+            // Используем модальное окно для сообщения об ошибке
+            if (typeof hintModal !== 'undefined') {
+                hintModal.showError('О нет! Вы нашли цветок слишком рано. Попробуйте еще раз!', () => {
+                    // Добавляем кнопку сброса после закрытия модального окна
+                    this._addResetButtonToMessage();
+                });
+            } else {
+                // Альтернативный вариант, если модальное окно недоступно
+                this._showMessage('О нет! Вы нашли цветок слишком рано. Попробуйте еще раз!', 'error');
+            }
         } else {
             // Открываем ячейку и проверяем на пустоту
             this._revealCell(row, col);
@@ -353,18 +400,58 @@ class MinesweeperGame {
             if (this._checkWin()) {
                 this._gameOver = true;
                 this._revealAll();
-                this._showMessage('Поздравляем! Вы успешно нашли все безопасные клетки!', 'success');
-                
-                // Вызываем колбэк завершения
-                if (this._completeCallback) {
-                    setTimeout(() => {
-                        this._completeCallback();
-                    }, 1500);
-                }
+                this._handleWin();
             }
         }
         
         this._updateBoard();
+    }
+    
+    /**
+     * Добавляет кнопку сброса в контейнер сообщений
+     * @private
+     */
+    _addResetButtonToMessage() {
+        const messageContainer = document.createElement('div');
+        messageContainer.className = 'game-message error';
+        
+        const resetButton = document.createElement('button');
+        resetButton.className = 'reset-button';
+        resetButton.textContent = 'Начать заново';
+        resetButton.addEventListener('click', () => {
+            this._resetGame();
+            messageContainer.remove();
+        });
+        
+        messageContainer.appendChild(resetButton);
+        this._container.appendChild(messageContainer);
+    }
+    
+    /**
+     * Обрабатывает выигрыш игрока
+     * @private
+     */
+    _handleWin() {
+        // Проверяем доступность модального окна
+        if (typeof hintModal !== 'undefined') {
+            // Показываем ТОЛЬКО сообщение об успехе, без подсказки
+            hintModal.showSuccess('Поздравляем! Вы успешно нашли все безопасные клетки!', () => {
+                // Вызываем колбэк завершения
+                if (this._completeCallback) {
+                    this._completeCallback();
+                }
+            });
+        } else {
+            // Если модальное окно недоступно, используем стандартный способ
+            this._showMessage('Поздравляем! Вы успешно нашли все безопасные клетки!', 'success');
+            
+            // Вызываем колбэк завершения
+            if (this._completeCallback) {
+                setTimeout(() => {
+                    this._completeCallback();
+                }, 1500);
+            }
+        }
     }
     
     _handleRightClick(row, col) {
@@ -383,14 +470,7 @@ class MinesweeperGame {
         if (this._checkWin()) {
             this._gameOver = true;
             this._revealAll();
-            this._showMessage('Поздравляем! Вы успешно нашли все цветы!', 'success');
-            
-            // Вызываем колбэк завершения
-            if (this._completeCallback) {
-                setTimeout(() => {
-                    this._completeCallback();
-                }, 1500);
-            }
+            this._handleWin();
         }
     }
     
@@ -484,7 +564,20 @@ class MinesweeperGame {
         this._updateBoard();
     }
     
+    /**
+     * Устанавливает функцию обратного вызова при завершении игры
+     * @param {Function} callback - Функция обратного вызова
+     * @returns {MinesweeperGame} - Текущий экземпляр для цепочки вызовов
+     */
     onComplete(callback) {
         this._completeCallback = callback;
+        return this; // Для цепочки вызовов
     }
+}
+
+// Экспортируем класс
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { MinesweeperGame };
+} else {
+    window.MinesweeperGame = MinesweeperGame;
 }

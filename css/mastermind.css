@@ -1,0 +1,367 @@
+/* Стили для игры Mastermind - окончательная версия */
+.mastermind-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0.5rem;
+    position: relative;
+}
+
+/* Счетчик попыток */
+.attempts-counter {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: #f7f7f7;
+    border-radius: 12px;
+    text-align: center;
+    font-weight: 500;
+    color: #444;
+}
+
+.attempts-used {
+    font-weight: 700;
+    color: #e84a5f;
+}
+
+.attempts-total {
+    font-weight: 700;
+    color: #e84a5f;
+}
+
+/* Основная доска */
+.mastermind-board {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* История попыток */
+.mastermind-attempts {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 1rem;
+}
+
+.mastermind-attempt-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0.8rem;
+    background-color: #f7f7f7;
+    border-radius: 12px;
+}
+
+.mastermind-attempt-number {
+    width: 30px;
+    height: 30px;
+    background-color: #e84a5f;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-right: 0.8rem;
+}
+
+.mastermind-attempt-pegs {
+    display: flex;
+    flex-grow: 1;
+    justify-content: flex-start;
+    gap: 8px;
+}
+
+.mastermind-peg {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.mastermind-attempt-hints {
+    display: flex;
+    margin-left: auto;
+    gap: 5px;
+}
+
+.mastermind-hint {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin: 2px;
+    display: inline-block;
+}
+
+.mastermind-hint.correct {
+    background-color: #4caf50; /* Зеленый цвет для точных совпадений */
+}
+
+.mastermind-hint.close {
+    background-color: #ffeb3b; /* Желтый цвет для символов на неправильных позициях */
+    border: 1px solid #ffc107;
+}
+
+.mastermind-hint.empty {
+    background-color: transparent;
+    border: 1px dashed #ccc;
+}
+
+/* Область ввода */
+.mastermind-input-area {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mastermind-guess-pegs {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 1rem;
+    background-color: #f7f7f7;
+    border-radius: 12px;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.mastermind-guess-peg {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    border: 2px dashed #ddd;
+}
+
+.mastermind-guess-peg:not(.empty) {
+    border: none;
+}
+
+/* Символы для выбора */
+.mastermind-colors {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 1.5rem 0;
+}
+
+.mastermind-color {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+/* Кнопка проверки */
+.check-button {
+    width: 100%;
+    padding: 1rem;
+    background-color: #e84a5f;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+}
+
+.check-button:disabled {
+    background-color: #f5a5b0;
+    cursor: not-allowed;
+}
+
+/* Кнопка сброса */
+.reset-button {
+    width: auto;
+    padding: 0.9rem 2rem;
+    background-color: #e84a5f;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: var(--font-family);
+    margin-top: 1rem;
+}
+
+/* Инструкции */
+.mastermind-instructions {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.mastermind-instructions.active {
+    display: flex;
+}
+
+.instructions-content {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 80%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.rules-button {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.instructions-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #e84a5f;
+    text-align: center;
+}
+
+.instructions-list {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 2rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.instructions-list li {
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.8rem;
+    background-color: #f8f8f8;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    color: #444;
+    font-weight: 500;
+}
+
+.instructions-list li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.start-game-button {
+    padding: 1rem 2.5rem;
+    background-color: #e84a5f;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(232, 74, 95, 0.25);
+    transition: all 0.2s ease;
+    margin: 0 auto;
+    display: block;
+}
+
+.start-game-button:hover {
+    background-color: #d83a4e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(232, 74, 95, 0.35);
+}
+
+.start-game-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(232, 74, 95, 0.25);
+}
+
+/* Сообщение о результате */
+.game-message {
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.game-message.success {
+    background-color: #e6f7ed;
+    color: #2e7d32;
+}
+
+.game-message.error {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+/* Скрытые элементы */
+.hidden {
+    display: none;
+}
+
+/* Адаптивный дизайн */
+@media (max-width: 480px) {
+    .mastermind-peg {
+        width: 25px;
+        height: 25px;
+        font-size: 1rem;
+    }
+    
+    .mastermind-guess-peg,
+    .mastermind-color {
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+    }
+    
+    .mastermind-hint {
+        width: 14px;
+        height: 14px;
+    }
+    
+    .check-button,
+    .reset-button,
+    .start-game-button {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+    }
+    
+    .instructions-title {
+        font-size: 1.3rem;
+    }
+    
+    .instructions-list li {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+}

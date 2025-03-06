@@ -1,0 +1,202 @@
+/* Стили для модального окна подсказок */
+.hint-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.hint-modal.active {
+    opacity: 1;
+}
+
+.hint-modal-content {
+    background-color: white;
+    border-radius: var(--border-radius-md);
+    padding: 2rem;
+    max-width: 90%;
+    width: 500px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+    overflow: hidden;
+}
+
+.hint-modal.active .hint-modal-content {
+    transform: translateY(0);
+}
+
+/* Декоративный элемент розы в углу модального окна */
+.hint-modal-content::before {
+    content: '🌹';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    opacity: 0.2;
+    transform: rotate(15deg);
+}
+
+/* Стили для разных типов модальных окон */
+.hint-modal-rules .hint-modal-content::before {
+    content: '📜';
+}
+
+.hint-modal-success .hint-modal-content::before {
+    content: '🎉';
+}
+
+.hint-modal-error .hint-modal-content::before {
+    content: '⚠️';
+}
+
+.hint-modal-title {
+    color: var(--primary-color);
+    font-family: var(--font-family-heading);
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    position: relative;
+}
+
+/* Декоративная линия под заголовком */
+.hint-modal-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-radius: 3px;
+}
+
+.hint-modal-body {
+    margin: 1.8rem 0;
+    background-color: var(--light-color);
+    padding: 1.5rem;
+    border-radius: var(--border-radius-sm);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.hint-modal-body .hint-text {
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: var(--dark-color);
+    white-space: pre-line; /* Сохраняем переносы строк */
+}
+
+.hint-modal-close {
+    display: block;
+    margin: 0 auto;
+    font-size: 1.05rem;
+    padding: 0.8rem 1.8rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    box-shadow: 0 4px 10px rgba(232, 74, 95, 0.2);
+}
+
+.hint-modal-close:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(232, 74, 95, 0.3);
+}
+
+.hint-modal-close:active {
+    transform: translateY(1px);
+}
+
+/* Стили для разных типов модальных окон */
+.hint-modal-rules .hint-modal-title {
+    color: #3498db;
+}
+
+.hint-modal-rules .hint-modal-title::after {
+    background: linear-gradient(90deg, #3498db, #2980b9);
+}
+
+.hint-modal-rules .hint-modal-close {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);
+}
+
+.hint-modal-rules .hint-modal-close:hover {
+    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
+}
+
+.hint-modal-success .hint-modal-title {
+    color: #2ecc71;
+}
+
+.hint-modal-success .hint-modal-title::after {
+    background: linear-gradient(90deg, #2ecc71, #27ae60);
+}
+
+.hint-modal-success .hint-modal-close {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    box-shadow: 0 4px 10px rgba(46, 204, 113, 0.2);
+}
+
+.hint-modal-success .hint-modal-close:hover {
+    box-shadow: 0 6px 15px rgba(46, 204, 113, 0.3);
+}
+
+.hint-modal-error .hint-modal-title {
+    color: #e74c3c;
+}
+
+.hint-modal-error .hint-modal-title::after {
+    background: linear-gradient(90deg, #e74c3c, #c0392b);
+}
+
+.hint-modal-error .hint-modal-close {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    box-shadow: 0 4px 10px rgba(231, 76, 60, 0.2);
+}
+
+.hint-modal-error .hint-modal-close:hover {
+    box-shadow: 0 6px 15px rgba(231, 76, 60, 0.3);
+}
+
+/* Адаптивный дизайн */
+@media (max-width: 600px) {
+    .hint-modal-content {
+        padding: 1.5rem;
+        max-width: 95%;
+    }
+    
+    .hint-modal-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.2rem;
+    }
+    
+    .hint-modal-body {
+        margin: 1.5rem 0;
+        padding: 1.2rem;
+    }
+    
+    .hint-modal-body .hint-text {
+        font-size: 1rem;
+    }
+    
+    .hint-modal-close {
+        font-size: 0.95rem;
+        padding: 0.7rem 1.5rem;
+    }
+}

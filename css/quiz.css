@@ -1,0 +1,245 @@
+/* Стили для игры Квиз */
+.quiz-container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.quiz-progress {
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+.progress-text {
+    text-align: center;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.score-value, .required-score {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    transition: width 0.5s ease;
+}
+
+.question {
+    background-color: white;
+    border-radius: var(--border-radius-md);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.question::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+.question-text {
+    font-size: 1.2rem;
+    margin-bottom: 1.2rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--dark-color);
+}
+
+.options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.option {
+    padding: 1rem 1.2rem;
+    background-color: #f8f8f8;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.option:hover {
+    background-color: #f0f0f0;
+    transform: translateX(5px);
+    box-shadow: var(--shadow-sm);
+}
+
+.option.selected {
+    background-color: #e6f7ff;
+    border-color: #91d5ff;
+}
+
+.option.correct {
+    background-color: #f6ffed;
+    border-color: #b7eb8f;
+}
+
+.option.correct::after {
+    content: '✓';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #52c41a;
+    font-weight: bold;
+}
+
+.option.incorrect {
+    background-color: #fff2f0;
+    border-color: #ffccc7;
+}
+
+.option.incorrect::after {
+    content: '✗';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ff4d4f;
+    font-weight: bold;
+}
+
+.feedback {
+    margin: 1.5rem 0;
+    padding: 1.2rem;
+    border-radius: var(--border-radius-md);
+    text-align: left;
+    font-weight: 500;
+    line-height: 1.5;
+    position: relative;
+    animation: slideFadeIn 0.3s ease;
+}
+
+.feedback.correct {
+    background-color: #f6ffed;
+    border: 1px solid #b7eb8f;
+    color: #389e0d;
+}
+
+.feedback.incorrect {
+    background-color: #fff2f0;
+    border: 1px solid #ffccc7;
+    color: #cf1322;
+}
+
+.next-button {
+    display: block;
+    margin: 1.2rem auto 0;
+    padding: 0.8rem 1.5rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 10px rgba(232, 74, 95, 0.2);
+}
+
+.next-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(232, 74, 95, 0.3);
+}
+
+.next-button:active {
+    transform: translateY(1px);
+}
+
+.game-message {
+    padding: 2rem;
+    border-radius: var(--border-radius-md);
+    text-align: center;
+    margin-top: 2rem;
+    animation: fadeIn 0.5s ease;
+}
+
+.game-message h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.game-message.success {
+    background-color: #f6ffed;
+    border: 1px solid #b7eb8f;
+}
+
+.game-message.error {
+    background-color: #fff2f0;
+    border: 1px solid #ffccc7;
+}
+
+.game-message .reset-button {
+    margin-top: 1.5rem;
+}
+
+/* Анимации */
+@keyframes slideFadeIn {
+    from { 
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Адаптивный дизайн */
+@media (max-width: 768px) {
+    .question-text {
+        font-size: 1.1rem;
+    }
+    
+    .option {
+        padding: 0.9rem 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .question {
+        padding: 1.2rem;
+    }
+    
+    .question-text {
+        font-size: 1rem;
+    }
+    
+    .option {
+        padding: 0.8rem;
+        font-size: 0.95rem;
+    }
+    
+    .feedback {
+        padding: 1rem;
+        font-size: 0.95rem;
+    }
+}

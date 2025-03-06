@@ -1,0 +1,375 @@
+/* Стили для игры "Три в ряд" */
+.match3-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Информационная панель */
+.match3-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 1rem 0;
+    padding: 0.8rem 1.2rem;
+    background-color: #f8f8f8;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+}
+
+.match3-score, .match3-moves {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+}
+
+.score-label, .moves-label, .hints-label {
+    margin-right: 0.5rem;
+    color: #666;
+}
+
+.score-value {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    position: relative;
+}
+
+.score-value::before {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    height: 3px;
+    width: var(--progress, 0%);
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+.score-target {
+    margin-left: 0.3rem;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.moves-value {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+/* Подсказки */
+.match3-hints {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+}
+
+.hint-button {
+    padding: 0.5rem 1rem;
+    background-color: var(--accent-color);
+    color: var(--dark-color);
+    border: none;
+    border-radius: 30px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.hint-button:hover:not(:disabled) {
+    background-color: var(--accent-dark);
+    transform: translateY(-2px);
+}
+
+.hint-button:disabled {
+    background-color: #e0e0e0;
+    color: #999;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.hints-count {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+}
+
+/* Контейнер игрового поля */
+.match3-board-container {
+    width: 100%;
+    max-width: 500px;
+    margin: 1rem auto;
+    padding: 1rem;
+    background-color: #f0f0f0;
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+}
+
+/* Игровое поле */
+.match3-board {
+    display: grid;
+    gap: 8px;
+    padding: 8px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Элементы игры */
+.match3-gem {
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    font-size: 2rem;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.match3-gem:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+.match3-gem.selected {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 3px var(--primary-color), 0 5px 15px rgba(232, 74, 95, 0.3);
+}
+
+/* Подсветка подсказки */
+.match3-gem.hint {
+    animation: hintPulse 1.5s infinite;
+    box-shadow: 0 0 0 3px #ff9800, 0 5px 15px rgba(255, 152, 0, 0.3);
+    z-index: 10;
+}
+
+@keyframes hintPulse {
+    0% { box-shadow: 0 0 0 3px #ff9800, 0 5px 15px rgba(255, 152, 0, 0.3); }
+    50% { box-shadow: 0 0 0 6px #ff9800, 0 5px 20px rgba(255, 152, 0, 0.5); }
+    100% { box-shadow: 0 0 0 3px #ff9800, 0 5px 15px rgba(255, 152, 0, 0.3); }
+}
+
+/* Уведомление об обновлении доски */
+.board-refresh-notice {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.board-refresh-notice.visible {
+    opacity: 1;
+    animation: bounceIn 0.5s;
+}
+
+@keyframes bounceIn {
+    0% { transform: translate(-50%, -50%) scale(0.5); }
+    20% { transform: translate(-50%, -50%) scale(1.1); }
+    40% { transform: translate(-50%, -50%) scale(0.9); }
+    60% { transform: translate(-50%, -50%) scale(1.05); }
+    80% { transform: translate(-50%, -50%) scale(0.95); }
+    100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* Анимация "тряски" для неправильных ходов */
+.match3-gem.shake {
+    animation: shakeAnimation 0.5s;
+}
+
+@keyframes shakeAnimation {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+
+/* Анимация обмена элементов */
+.match3-gem.swap-right {
+    animation: swapRightAnimation 0.3s forwards;
+}
+
+.match3-gem.swap-left {
+    animation: swapLeftAnimation 0.3s forwards;
+}
+
+.match3-gem.swap-up {
+    animation: swapUpAnimation 0.3s forwards;
+}
+
+.match3-gem.swap-down {
+    animation: swapDownAnimation 0.3s forwards;
+}
+
+/* Анимация для совпадений и очистки */
+.match3-gem.match {
+    animation: matchAnimation 0.4s forwards;
+}
+
+/* Анимация для падения элементов */
+.match3-gem.fall {
+    animation: fallAnimation 0.4s forwards;
+}
+
+/* Анимация для новых элементов */
+.match3-gem.new {
+    animation: newGemAnimation 0.4s forwards;
+}
+
+/* Анимация для начисления очков */
+.match3-points {
+    position: absolute;
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 1.2rem;
+    pointer-events: none;
+    z-index: 10;
+    animation: pointsFlyAnimation 1.2s forwards;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Keyframes для анимаций */
+@keyframes swapRightAnimation {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(100% + 8px)); }
+}
+
+@keyframes swapLeftAnimation {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-100% - 8px)); }
+}
+
+@keyframes swapUpAnimation {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(calc(-100% - 8px)); }
+}
+
+@keyframes swapDownAnimation {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(calc(100% + 8px)); }
+}
+
+@keyframes matchAnimation {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; box-shadow: 0 0 15px var(--secondary-color); }
+    100% { transform: scale(0); opacity: 0; }
+}
+
+@keyframes fallAnimation {
+    0% { transform: translateY(-50px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes newGemAnimation {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pointsFlyAnimation {
+    0% { transform: translateY(0); opacity: 1; }
+    30% { transform: translateY(-20px); opacity: 1; }
+    100% { transform: translateY(-40px); opacity: 0; }
+}
+
+/* Сообщения */
+.game-message {
+    margin-top: 1.5rem;
+    padding: 1.2rem;
+    border-radius: var(--border-radius-md);
+    text-align: center;
+    font-weight: 600;
+    width: 100%;
+}
+
+.game-message.success {
+    background-color: #f6ffed;
+    color: #52c41a;
+    border: 1px solid #b7eb8f;
+}
+
+.game-message.error {
+    background-color: #fff2f0;
+    color: #ff4d4f;
+    border: 1px solid #ffccc7;
+}
+
+.game-message .reset-button {
+    margin-top: 1rem;
+}
+
+/* Адаптивный дизайн */
+@media (max-width: 768px) {
+    .match3-gem {
+        font-size: 1.5rem;
+    }
+    
+    .match3-board-container {
+        padding: 0.8rem;
+    }
+    
+    .match3-board {
+        gap: 6px;
+        padding: 6px;
+    }
+    
+    .match3-info {
+        padding: 0.6rem 1rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .match3-score, .match3-moves, .match3-hints {
+        flex: 1 1 auto;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .match3-gem {
+        font-size: 1.2rem;
+    }
+    
+    .match3-board-container {
+        padding: 0.5rem;
+    }
+    
+    .match3-board {
+        gap: 4px;
+        padding: 4px;
+    }
+    
+    .hint-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    
+    .score-value, .moves-value {
+        font-size: 1rem;
+    }
+}

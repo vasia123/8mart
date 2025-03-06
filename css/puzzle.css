@@ -1,0 +1,146 @@
+/* Стили для игры Пазл */
+.puzzle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.puzzle-board {
+    display: grid;
+    grid-gap: 4px;
+    margin: 0 auto 1.5rem;
+    max-width: 100%;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    aspect-ratio: 1;
+    width: 100%;
+    max-width: 450px;
+}
+
+.puzzle-piece {
+    background-color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.puzzle-piece:not(.empty):hover {
+    transform: scale(0.98);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.puzzle-piece.empty {
+    background-color: transparent;
+    box-shadow: none;
+    cursor: default;
+}
+
+.puzzle-piece.completed {
+    animation: piecePulse 0.5s ease;
+    box-shadow: 0 0 10px rgba(232, 74, 95, 0.5);
+}
+
+@keyframes piecePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Счетчик ходов */
+.moves-counter {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    background-color: #f8f8f8;
+    border-radius: 50px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* Предварительный просмотр */
+.preview-container {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.preview-button {
+    background-color: var(--accent-color);
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+}
+
+.puzzle-preview {
+    max-width: 200px;
+    margin: 0 auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    animation: fadeInScale 0.3s ease;
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.preview-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Сообщение о победе */
+.game-message.success {
+    background-color: var(--accent-color);
+    color: var(--dark-color);
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius-md);
+    text-align: center;
+    font-weight: 600;
+    margin: 1rem 0;
+    animation: fadeIn 0.5s ease;
+}
+
+/* Адаптивный дизайн */
+@media (max-width: 768px) {
+    .puzzle-board {
+        max-width: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .puzzle-board {
+        max-width: 280px;
+        grid-gap: 3px;
+        padding: 8px;
+    }
+    
+    .game-controls {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .moves-counter {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .preview-button {
+        font-size: 0.9rem;
+        padding: 0.7rem 1.2rem;
+    }
+    
+    .puzzle-preview {
+        max-width: 150px;
+    }
+}

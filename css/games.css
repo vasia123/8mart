@@ -1,4 +1,11 @@
 /* Стили для мини-игр */
+@import 'mastermind.css';
+@import 'anagrams.css';
+@import 'quiz.css';
+@import 'puzzle.css';
+@import 'match3.css';
+/* @import 'pairs.css'; */
+
 
 /* Общие стили для всех игр */
 .game-header {
@@ -208,279 +215,6 @@
     animation: bounce 1s infinite;
 }
 
-/* Стили для игры Mastermind */
-.mastermind-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-.mastermind-legend {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin: 1rem 0;
-    padding: 0.8rem;
-    background-color: #f8f8f8;
-    border-radius: 8px;
-}
-
-.mastermind-legend-item {
-    display: flex;
-    align-items: center;
-    margin: 0.3rem 0;
-}
-
-.mastermind-legend .mastermind-hint {
-    margin-right: 0.5rem;
-}
-
-.mastermind-board {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f9f9f9;
-    border-radius: var(--border-radius-md);
-    padding: 1.5rem;
-    box-shadow: var(--shadow-sm);
-}
-
-.mastermind-secret-code {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background-color: var(--accent-color);
-    border-radius: 12px;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.mastermind-code-peg {
-    width: 40px;
-    height: 40px;
-    margin: 0 0.5rem;
-    background-color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    box-shadow: var(--shadow-sm);
-}
-
-.mastermind-code-peg.hidden {
-    background-color: var(--primary-color);
-    color: white;
-    font-weight: bold;
-}
-
-.mastermind-attempts {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 1.5rem;
-    max-height: 400px;
-    overflow-y: auto;
-    padding-right: 10px;
-}
-
-.mastermind-attempt-row {
-    display: flex;
-    align-items: center;
-    padding: 0.8rem;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: var(--shadow-sm);
-}
-
-.mastermind-attempt-number {
-    width: 24px;
-    height: 24px;
-    background-color: var(--primary-color);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    font-weight: bold;
-    margin-right: 0.8rem;
-}
-
-.mastermind-attempt-pegs {
-    display: flex;
-    margin-right: 1rem;
-}
-
-.mastermind-peg {
-    width: 30px;
-    height: 30px;
-    margin: 0 4px;
-    background-color: #f0f0f0;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-}
-
-.mastermind-attempt-hints {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    gap: 3px;
-    margin-left: auto;
-}
-
-.mastermind-hint {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    border: 1px solid #ddd;
-}
-
-.mastermind-hint.exact {
-    background-color: var(--success-color);
-    border-color: var(--success-color);
-}
-
-.mastermind-hint.close {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-}
-
-.mastermind-input {
-    width: 100%;
-    margin-top: 1.5rem;
-}
-
-.mastermind-colors {
-    display: flex;
-    justify-content: center;
-    margin-top: 1.5rem;
-    flex-wrap: wrap;
-}
-
-.mastermind-color {
-    width: 40px;
-    height: 40px;
-    margin: 0.5rem;
-    background-color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    cursor: pointer;
-    box-shadow: var(--shadow-sm);
-    transition: transform var(--transition-fast);
-}
-
-.mastermind-color:hover {
-    transform: scale(1.1);
-}
-
-.mastermind-guess {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.mastermind-guess-pegs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
-}
-
-.mastermind-guess-peg {
-    width: 40px;
-    height: 40px;
-    margin: 0 0.5rem;
-    background-color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    box-shadow: var(--shadow-sm);
-    cursor: pointer;
-}
-
-.mastermind-guess-peg.empty {
-    border: 2px dashed #ddd;
-}
-
-.mastermind-button-group {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.check-button, .clear-button {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.9rem;
-}
-
-/* Адаптивный дизайн для Mastermind */
-@media (max-width: 768px) {
-    .mastermind-code-peg,
-    .mastermind-guess-peg,
-    .mastermind-color {
-        width: 35px;
-        height: 35px;
-        font-size: 1.3rem;
-    }
-    
-    .mastermind-peg {
-        width: 25px;
-        height: 25px;
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .mastermind-code-peg,
-    .mastermind-guess-peg,
-    .mastermind-color {
-        width: 30px;
-        height: 30px;
-        font-size: 1.1rem;
-        margin: 0 3px;
-    }
-    
-    .mastermind-peg {
-        width: 20px;
-        height: 20px;
-        font-size: 0.9rem;
-        margin: 0 2px;
-    }
-    
-    .mastermind-hint {
-        width: 12px;
-        height: 12px;
-    }
-    
-    .mastermind-attempt-number {
-        width: 20px;
-        height: 20px;
-        font-size: 0.7rem;
-        margin-right: 0.5rem;
-    }
-    
-    .mastermind-attempt-row {
-        padding: 0.6rem;
-    }
-    
-    .mastermind-button-group {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-}
 
 @keyframes bounce {
     0%, 100% { transform: translateY(0); }
@@ -780,8 +514,9 @@
 }
 
 .anagrams-container .hint-button {
-    background-color: transparent;
-    color: var(--primary-color);
+    background-color: var(--secondary-color);
+    border: none;
+    color: #fff;
     box-shadow: none;
     font-size: 0.9rem;
     padding: 0.4rem 0.8rem;
@@ -789,7 +524,7 @@
 }
 
 .anagrams-container .hint-button:hover {
-    background-color: rgba(232, 74, 95, 0.1);
+    background-color: var(--secondary-dark);
     transform: none;
 }
 

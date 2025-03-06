@@ -12,12 +12,12 @@ class DetectiveGame {
         // Предзагрузка необходимых модулей
         this._gameModules = {
             minesweeper: MinesweeperGame,
+            mastermind: Mastermind,
+            anagrams: Anagrams,
+            quiz: Quiz,
             puzzle: PuzzleGame,
-            quiz: QuizGame,
-            differences: DifferencesGame,
-            memory: MemoryGame,
-            anagrams: AnagramsGame,
-            maze: MazeGame
+            match3: Match3Game,
+            pairs: PairsGame
         };
         
         this._initialize();
@@ -154,7 +154,12 @@ class DetectiveGame {
         
         try {
             // Создаем экземпляр игры используя предзагруженный класс
-            this._gameInstance = new this._gameModules[gameType]();
+            this._gameInstance = new this._gameModules[gameType](gameContainer);
+            
+            // Устанавливаем текст подсказки для следующего этапа
+            if (this._currentStage.nextHint) {
+                this._gameInstance.setNextHint(this._currentStage.nextHint);
+            }
             
             // Инициализируем игру
             this._gameInstance.init(gameContainer.id, {
@@ -185,43 +190,65 @@ class DetectiveGame {
         // Отмечаем этап как пройденный
         this._progressManager.markStageCompleted(this._currentStage.id);
         
-        // Получаем контейнер подсказки
-        const hintContainer = document.getElementById('hint-container');
-        const hintText = document.getElementById('hint-text');
-        
-        // Добавляем текст подсказки
-        hintText.textContent = this._currentStage.nextHint;
-        
-        // Очищаем предыдущую кнопку завершения, если она есть
-        const oldFinishButton = hintContainer.querySelector('.finish-button');
-        if (oldFinishButton) {
-            oldFinishButton.remove();
-        }
-        
-        // Если это последний этап - показываем кнопку завершения
-        if (this._currentStage.id === this._stages.length) {
-            const finishButton = document.createElement('button');
-            finishButton.className = 'finish-button';
-            finishButton.textContent = 'Завершить расследование';
-            finishButton.addEventListener('click', () => this._showFinalMessage());
+        // Проверяем, доступен ли компонент hintModal
+        if (typeof hintModal !== 'undefined') {
+            // Используем модальное окно для отображения подсказки
+            const options = {
+                title: 'Следующая подсказка'
+            };
             
-            hintContainer.appendChild(finishButton);
+            // Если это последний этап, добавляем кнопку завершения
+            if (this._currentStage.id === this._stages.length) {
+                options.buttonText = 'Завершить расследование';
+                options.callback = () => this._showFinalMessage();
+            }
+            
+            // Показываем подсказку в модальном окне
+            hintModal.show(this._currentStage.nextHint, options);
+            
+            // Вибрация для мобильных устройств
+            if ('vibrate' in navigator) {
+                navigator.vibrate([100, 50, 100]);
+            }
+        } else {
+            // Если модальное окно недоступно, используем стандартный способ отображения
+            // Получаем контейнер подсказки
+            const hintContainer = document.getElementById('hint-container');
+            const hintText = document.getElementById('hint-text');
+            
+            // Добавляем текст подсказки
+            hintText.textContent = this._currentStage.nextHint;
+            
+            // Очищаем предыдущую кнопку завершения, если она есть
+            const oldFinishButton = hintContainer.querySelector('.finish-button');
+            if (oldFinishButton) {
+                oldFinishButton.remove();
+            }
+            
+            // Если это последний этап - показываем кнопку завершения
+            if (this._currentStage.id === this._stages.length) {
+                const finishButton = document.createElement('button');
+                finishButton.className = 'finish-button';
+                finishButton.textContent = 'Завершить расследование';
+                finishButton.addEventListener('click', () => this._showFinalMessage());
+                
+                hintContainer.appendChild(finishButton);
+            }
+            
+            // Показываем подсказку
+            hintContainer.classList.remove('hidden');
+            
+            // Вибрация для мобильных устройств
+            if ('vibrate' in navigator) {
+                navigator.vibrate([100, 50, 100]);
+            }
+            
+            // Прокрутка к подсказке
+            setTimeout(() => {
+                hintContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
         }
-        
-        // Показываем подсказку
-        hintContainer.classList.remove('hidden');
-        
-        // Вибрация для мобильных устройств
-        if ('vibrate' in navigator) {
-            navigator.vibrate([100, 50, 100]);
-        }
-        
-        // Прокрутка к подсказке
-        setTimeout(() => {
-            hintContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 300);
     }
-    
     
     /**
      * Воспроизвести звук уведомления
@@ -266,6 +293,31 @@ class DetectiveGame {
      * @private
      */
     _showFinalMessage() {
+        // Проверяем, доступно ли модальное окно
+        if (typeof hintModal !== 'undefined') {
+            // Используем модальное окно для финального сообщения
+            hintModal.showSuccess(`
+Поздравляем! Дело раскрыто!
+
+Вы блестяще прошли все испытания и разгадали тайну пропавших роз.
+Оказалось, что розы были спрятаны, чтобы подготовить для вас особый сюрприз!
+
+Пожалуйста, обратитесь к организатору игры для получения вашего заслуженного приза.
+            `, () => {
+                // После закрытия модального окна показываем финальный экран
+                this._renderFinalScreen();
+            });
+        } else {
+            // Если модальное окно недоступно, сразу показываем финальный экран
+            this._renderFinalScreen();
+        }
+    }
+    
+    /**
+     * Отображение финального экрана
+     * @private
+     */
+    _renderFinalScreen() {
         const mainContainer = document.getElementById('main-container');
         mainContainer.innerHTML = `
             <div class="final-message">
@@ -279,116 +331,21 @@ class DetectiveGame {
     }
 }
 
-// Создаем заглушки для пока не реализованных игр
-class QuizGame {
-    constructor() { this._callback = null; }
-    init(containerId, options) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = `
-            <div class="game-placeholder">
-                <h3>Квиз о знаменитых женщинах</h3>
-                <p>Здесь будет квиз с вопросами о знаменитых женщинах в истории.</p>
-                <button id="complete-placeholder">Завершить игру (заглушка)</button>
-            </div>
-        `;
-        document.getElementById('complete-placeholder').addEventListener('click', () => {
-            if (this._callback) this._callback();
-        });
-    }
-    onComplete(callback) { this._callback = callback; }
-}
-
-class PuzzleGame {
-    constructor() { this._callback = null; }
-    init(containerId, options) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = `
-            <div class="game-placeholder">
-                <h3>Пазл</h3>
-                <p>Здесь будет игра-пазл, которую нужно собрать.</p>
-                <button id="complete-placeholder">Завершить игру (заглушка)</button>
-            </div>
-        `;
-        document.getElementById('complete-placeholder').addEventListener('click', () => {
-            if (this._callback) this._callback();
-        });
-    }
-    onComplete(callback) { this._callback = callback; }
-}
-
-class DifferencesGame {
-    constructor() { this._callback = null; }
-    init(containerId, options) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = `
-            <div class="game-placeholder">
-                <h3>Найди отличия</h3>
-                <p>Здесь будет игра на поиск отличий между двумя изображениями.</p>
-                <button id="complete-placeholder">Завершить игру (заглушка)</button>
-            </div>
-        `;
-        document.getElementById('complete-placeholder').addEventListener('click', () => {
-            if (this._callback) this._callback();
-        });
-    }
-    onComplete(callback) { this._callback = callback; }
-}
-
-class MemoryGame {
-    constructor() { this._callback = null; }
-    init(containerId, options) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = `
-            <div class="game-placeholder">
-                <h3>Игра на память</h3>
-                <p>Здесь будет игра на подбор парных карточек.</p>
-                <button id="complete-placeholder">Завершить игру (заглушка)</button>
-            </div>
-        `;
-        document.getElementById('complete-placeholder').addEventListener('click', () => {
-            if (this._callback) this._callback();
-        });
-    }
-    onComplete(callback) { this._callback = callback; }
-}
-
-class AnagramsGame {
-    constructor() { this._callback = null; }
-    init(containerId, options) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = `
-            <div class="game-placeholder">
-                <h3>Анаграммы</h3>
-                <p>Здесь будет игра на разгадывание анаграмм весенних цветов.</p>
-                <button id="complete-placeholder">Завершить игру (заглушка)</button>
-            </div>
-        `;
-        document.getElementById('complete-placeholder').addEventListener('click', () => {
-            if (this._callback) this._callback();
-        });
-    }
-    onComplete(callback) { this._callback = callback; }
-}
-
-class MazeGame {
-    constructor() { this._callback = null; }
-    init(containerId, options) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = `
-            <div class="game-placeholder">
-                <h3>Лабиринт</h3>
-                <p>Здесь будет игра-лабиринт, которую нужно пройти.</p>
-                <button id="complete-placeholder">Завершить игру (заглушка)</button>
-            </div>
-        `;
-        document.getElementById('complete-placeholder').addEventListener('click', () => {
-            if (this._callback) this._callback();
-        });
-    }
-    onComplete(callback) { this._callback = callback; }
-}
-
 // Инициализация приложения при загрузке документа
 document.addEventListener('DOMContentLoaded', () => {
+    // Проверяем наличие скрипта hint-modal.js
+    // Если его нет, динамически создаем его
+    if (typeof hintModal === 'undefined') {
+        const script = document.createElement('script');
+        script.src = 'js/components/hint-modal.js';
+        script.onload = () => {
+            console.log('HintModal загружен');
+        };
+        script.onerror = () => {
+            console.warn('Не удалось загрузить HintModal, используем альтернативный режим');
+        };
+        document.head.appendChild(script);
+    }
+    
     window.gameApp = new DetectiveGame();
 });
