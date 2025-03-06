@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Дело о пропавших розах</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/games.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+    <!-- Фавиконка -->
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <!-- Мета-тег для мобильных устройств, отключающий подсветку телефонных номеров и т.д. -->
+    <meta name="format-detection" content="telephone=no">
+</head>
+<body>
+    <div class="app-wrapper">
+        <header class="main-header">
+            <div class="logo-container">
+                <h1 class="main-title">Дело о пропавших розах</h1>
+                <div class="logo-accent">🌹🔍</div>
+            </div>
+        </header>
+        
+        <main id="main-container">
+            <div id="detective-container" class="detective-container hidden">
+                <div class="detective-card">
+                    <div class="detective-avatar">
+                        <img src="images/detective.svg" alt="Детектив Роза Шерлок" class="detective-image">
+                    </div>
+                    <div class="detective-info">
+                        <div class="detective-name">Детектив Роза Шерлок</div>
+                        <div class="detective-badge">Лучший детектив города</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="story-container" class="story-container hidden">
+                <!-- Убрали заголовок локации -->
+                <p id="story-text" class="story-text"></p>
+            </div>
+            
+            <div id="game-container" class="game-container">
+                <!-- Здесь будет отображаться мини-игра -->
+                <div class="loading-screen">
+                    <div class="loader"></div>
+                    <p>Загрузка расследования...</p>
+                </div>
+            </div>
+            
+            <div id="hint-container" class="hint-container hidden">
+                <h3>Следующая подсказка</h3>
+                <div class="hint-bubble">
+                    <p id="hint-text"></p>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="main-footer">
+            <p>Специально к 8 марта 2025 года</p>
+        </footer>
+    </div>
+    
+    <!-- Предзагрузка звука уведомления -->
+    <audio id="notification-sound" preload="auto" src="sounds/notification.mp3"></audio>
+    
+    <!-- Скрипты -->
+    <script src="js/story.js"></script>
+    <script src="js/progress.js"></script>
+    <script src="js/games/minesweeper.js"></script>
+    <!-- Здесь будут подключены другие игры -->
+    <script src="js/app.js"></script>
+</body>
+</html>

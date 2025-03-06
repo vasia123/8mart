@@ -1,0 +1,888 @@
+/* Стили для мини-игр */
+
+/* Общие стили для всех игр */
+.game-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.game-header h2 {
+    color: var(--primary-color);
+    font-family: var(--font-family-heading);
+    font-size: 1.8rem;
+    margin-bottom: 0.6rem;
+}
+
+.game-header p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.game-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.2rem;
+}
+
+.reset-button {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+}
+
+/* Стили для игры Сапер */
+.minesweeper-container {
+    --cell-size: 50px;
+}
+
+.minesweeper-board {
+    display: grid;
+    grid-gap: 4px;
+    margin: 0 auto;
+    max-width: 100%;
+    width: fit-content;
+}
+
+.minesweeper-cell {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    background-color: #e8e8e8;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.minesweeper-cell:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-2px);
+}
+
+.minesweeper-cell:active {
+    transform: translateY(0);
+}
+
+.minesweeper-cell.revealed {
+    background-color: #f8f8f8;
+    box-shadow: none;
+}
+
+.minesweeper-cell.flower {
+    background-color: #ffe6e6;
+    color: #e84a5f;
+}
+
+.minesweeper-cell.flagged {
+    background-color: #f0f0f0;
+    color: #e84a5f;
+}
+
+.minesweeper-cell.number-1 { color: #4285f4; }
+.minesweeper-cell.number-2 { color: #34a853; }
+.minesweeper-cell.number-3 { color: #ea4335; }
+.minesweeper-cell.number-4 { color: #8a2be2; }
+.minesweeper-cell.number-5 { color: #b8860b; }
+.minesweeper-cell.number-6 { color: #008080; }
+.minesweeper-cell.number-7 { color: #000000; }
+.minesweeper-cell.number-8 { color: #808080; }
+
+
+/* Добавьте эти стили в ваш файл CSS вместо предыдущих стилей для переключателя режимов */
+
+/* Подсказка для мобильных устройств */
+.mobile-hint-box {
+    margin: 0.5rem 0 1.2rem;
+    padding: 0.8rem;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #666;
+    text-align: center;
+    border: 1px dashed #ddd;
+}
+
+.mobile-hint-box p {
+    margin: 0.3rem 0;
+}
+
+/* Обратная связь при долгом нажатии */
+.minesweeper-cell.long-press-feedback {
+    animation: pulse 0.3s ease;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+/* Стили для отзывчивых ячеек сапера */
+.minesweeper-cell {
+    touch-action: manipulation; /* Предотвращает масштабирование при двойном тапе */
+    user-select: none; /* Предотвращает выделение текста */
+    -webkit-tap-highlight-color: transparent; /* Убирает подсветку при нажатии на iOS */
+}
+
+/* Простые стили для подсказок без лишнего кода */
+
+/* Базовые стили для подсказки */
+.hint-container {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--accent-color) 0%, #fff 100%);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    animation: fadeIn 0.5s ease;
+}
+
+/* Анимация появления */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Класс hidden для скрытия подсказки */
+.hidden {
+    display: none;
+}
+
+/* Заголовок подсказки */
+.hint-container h3 {
+    color: var(--dark-color);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-family: var(--font-family-heading);
+    font-size: 1.5rem;
+}
+
+/* Бабл для текста подсказки */
+.hint-bubble {
+    background-color: white;
+    border-radius: var(--border-radius-md);
+    padding: 1.5rem;
+    position: relative;
+    box-shadow: var(--shadow-sm);
+}
+
+.hint-bubble:before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 30px;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 12px solid white;
+}
+
+/* Текст подсказки */
+.hint-bubble p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin: 0;
+    color: #333;
+}
+
+/* Метка "Новая подсказка" */
+.hint-container::before {
+    content: 'Новая подсказка!';
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    background-color: #e84a5f;
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(232, 74, 95, 0.3);
+    animation: bounce 1s infinite;
+}
+
+/* Стили для игры Mastermind */
+.mastermind-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.mastermind-legend {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 1rem 0;
+    padding: 0.8rem;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+}
+
+.mastermind-legend-item {
+    display: flex;
+    align-items: center;
+    margin: 0.3rem 0;
+}
+
+.mastermind-legend .mastermind-hint {
+    margin-right: 0.5rem;
+}
+
+.mastermind-board {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f9f9f9;
+    border-radius: var(--border-radius-md);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.mastermind-secret-code {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: var(--accent-color);
+    border-radius: 12px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.mastermind-code-peg {
+    width: 40px;
+    height: 40px;
+    margin: 0 0.5rem;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.mastermind-code-peg.hidden {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
+}
+
+.mastermind-attempts {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.mastermind-attempt-row {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+}
+
+.mastermind-attempt-number {
+    width: 24px;
+    height: 24px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-right: 0.8rem;
+}
+
+.mastermind-attempt-pegs {
+    display: flex;
+    margin-right: 1rem;
+}
+
+.mastermind-peg {
+    width: 30px;
+    height: 30px;
+    margin: 0 4px;
+    background-color: #f0f0f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.mastermind-attempt-hints {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 3px;
+    margin-left: auto;
+}
+
+.mastermind-hint {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+}
+
+.mastermind-hint.exact {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.mastermind-hint.close {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.mastermind-input {
+    width: 100%;
+    margin-top: 1.5rem;
+}
+
+.mastermind-colors {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.mastermind-color {
+    width: 40px;
+    height: 40px;
+    margin: 0.5rem;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-fast);
+}
+
+.mastermind-color:hover {
+    transform: scale(1.1);
+}
+
+.mastermind-guess {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mastermind-guess-pegs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.mastermind-guess-peg {
+    width: 40px;
+    height: 40px;
+    margin: 0 0.5rem;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+}
+
+.mastermind-guess-peg.empty {
+    border: 2px dashed #ddd;
+}
+
+.mastermind-button-group {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.check-button, .clear-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+}
+
+/* Адаптивный дизайн для Mastermind */
+@media (max-width: 768px) {
+    .mastermind-code-peg,
+    .mastermind-guess-peg,
+    .mastermind-color {
+        width: 35px;
+        height: 35px;
+        font-size: 1.3rem;
+    }
+    
+    .mastermind-peg {
+        width: 25px;
+        height: 25px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .mastermind-code-peg,
+    .mastermind-guess-peg,
+    .mastermind-color {
+        width: 30px;
+        height: 30px;
+        font-size: 1.1rem;
+        margin: 0 3px;
+    }
+    
+    .mastermind-peg {
+        width: 20px;
+        height: 20px;
+        font-size: 0.9rem;
+        margin: 0 2px;
+    }
+    
+    .mastermind-hint {
+        width: 12px;
+        height: 12px;
+    }
+    
+    .mastermind-attempt-number {
+        width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+        margin-right: 0.5rem;
+    }
+    
+    .mastermind-attempt-row {
+        padding: 0.6rem;
+    }
+    
+    .mastermind-button-group {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Кнопка завершения */
+.finish-button {
+    display: block;
+    margin: 1.8rem auto 0;
+    font-size: 1.1rem;
+    padding: 1rem 2rem;
+}
+
+/* Дополнительные стили для мобильных устройств */
+@media (max-width: 480px) {
+    .mobile-hint-box {
+        font-size: 0.8rem;
+        padding: 0.6rem;
+    }
+    
+    .hint-container {
+        margin-top: 1.5rem;
+        padding: 1.2rem;
+    }
+    
+    .hint-container::before {
+        top: -8px;
+        right: 10px;
+        padding: 0.2rem 0.6rem;
+        font-size: 0.7rem;
+    }
+    
+    .hint-bubble {
+        padding: 1.2rem;
+    }
+    
+    .hint-bubble p {
+        font-size: 1rem;
+    }
+}
+
+.flowers-counter {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    background-color: #f8f8f8;
+    border-radius: 50px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.moves-counter {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    background-color: #f8f8f8;
+    border-radius: 50px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    font-weight: 600;
+}
+
+/* Стили для игры Пазл */
+.puzzle-container {
+    text-align: center;
+}
+
+.puzzle-board {
+    display: grid;
+    grid-gap: 4px;
+    margin: 0 auto;
+    max-width: 100%;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.puzzle-piece {
+    aspect-ratio: 1 / 1;
+    background-size: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.puzzle-piece:not(.empty):hover {
+    transform: scale(0.98);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.puzzle-piece.empty {
+    background-color: transparent;
+    box-shadow: none;
+    cursor: default;
+}
+
+/* Стили для игры Квиз */
+.quiz-container .question {
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid var(--primary-color);
+}
+
+.quiz-container .question-text {
+    font-size: 1.2rem;
+    margin-bottom: 1.2rem;
+    font-weight: 500;
+}
+
+.quiz-container .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.quiz-container .option {
+    padding: 0.8rem 1.2rem;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quiz-container .option:hover {
+    background-color: #f0f0f0;
+    transform: translateX(5px);
+}
+
+.quiz-container .option.selected {
+    background-color: #e6f7ff;
+    border-color: #91d5ff;
+}
+
+.quiz-container .option.correct {
+    background-color: #f6ffed;
+    border-color: #b7eb8f;
+}
+
+.quiz-container .option.incorrect {
+    background-color: #fff2f0;
+    border-color: #ffccc7;
+}
+
+.quiz-container .feedback {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.quiz-container .feedback.correct {
+    background-color: #f6ffed;
+    color: #52c41a;
+}
+
+.quiz-container .feedback.incorrect {
+    background-color: #fff2f0;
+    color: #ff4d4f;
+}
+
+.quiz-container .next-button {
+    margin-top: 1.5rem;
+}
+
+/* Стили для игры Найди отличия */
+.differences-container .images-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 1.5rem;
+}
+
+.differences-container .image-wrapper {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.differences-container .game-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.differences-container .difference-spot {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: rgba(232, 74, 95, 0.3);
+    border: 2px solid var(--primary-color);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    animation: pulse 1.5s infinite;
+}
+
+/* Стили для игры Память */
+.memory-container .memory-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 0 auto;
+    max-width: 500px;
+}
+
+.memory-container .memory-card {
+    aspect-ratio: 1 / 1;
+    background-color: var(--primary-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0;
+    transition: transform 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.memory-container .memory-card::before {
+    content: '?';
+    font-size: 2rem;
+    color: white;
+    opacity: 0.5;
+}
+
+.memory-container .memory-card:hover {
+    transform: scale(0.97);
+}
+
+.memory-container .memory-card.flipped {
+    transform: rotateY(180deg);
+    background-color: white;
+    font-size: 2rem;
+}
+
+.memory-container .memory-card.flipped::before {
+    content: '';
+}
+
+.memory-container .memory-card.matched {
+    background-color: #f6ffed;
+    cursor: default;
+}
+
+/* Стили для игры Анаграммы */
+.anagrams-container .anagram-card {
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+}
+
+.anagrams-container .anagram-letters {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    letter-spacing: 3px;
+    margin-bottom: 1.5rem;
+}
+
+.anagrams-container .anagram-input {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 1.5rem;
+    padding: 0.8rem 1rem;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    text-align: center;
+    transition: border-color 0.3s ease;
+}
+
+.anagrams-container .anagram-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.anagrams-container .anagram-hint {
+    color: #888;
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+
+.anagrams-container .hint-button {
+    background-color: transparent;
+    color: var(--primary-color);
+    box-shadow: none;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+    margin-top: 0.5rem;
+}
+
+.anagrams-container .hint-button:hover {
+    background-color: rgba(232, 74, 95, 0.1);
+    transform: none;
+}
+
+/* Стили для игры Лабиринт */
+.maze-container {
+    text-align: center;
+}
+
+.maze-board {
+    display: inline-block;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+}
+
+.maze-container .maze-instructions {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: #f8f8f8;
+    border-radius: 6px;
+}
+
+.maze-row {
+    display: flex;
+}
+
+.maze-cell {
+    width: 30px;
+    height: 30px;
+    box-sizing: border-box;
+}
+
+.maze-cell.wall {
+    background-color: #333;
+    border-radius: 2px;
+}
+
+.maze-cell.path {
+    background-color: white;
+}
+
+.maze-cell.current {
+    background-color: var(--primary-color);
+    border-radius: 50%;
+}
+
+.maze-cell.start {
+    background-color: #4caf50;
+    border-radius: 4px;
+}
+
+.maze-cell.finish {
+    background-color: #f44336;
+    border-radius: 4px;
+}
+
+/* Адаптивный дизайн для игр */
+@media (max-width: 768px) {
+    .minesweeper-container {
+        --cell-size: 40px;
+    }
+    
+    .game-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .differences-container .images-container {
+        flex-direction: column;
+    }
+    
+    .memory-container .memory-board {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .maze-cell {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .minesweeper-container {
+        --cell-size: 35px;
+    }
+    
+    .memory-container .memory-board {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .maze-cell {
+        width: 20px;
+        height: 20px;
+    }
+}

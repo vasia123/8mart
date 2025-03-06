@@ -1,0 +1,7 @@
+{
+    "scripts": {
+        "make-prompt": "python make_prompt.py --include .js .html .css --output project_files.txt",
+        "make-files": "python make_files.py",
+        "start": "python -m http.server 8080"
+    }
+}
