@@ -32,7 +32,7 @@ class PuzzleGame {
             '8march': [
                 'images/puzzle/flowers.jpg',
                 'images/puzzle/vaza.jpg',
-                'images/puzzle/march-8.avif'
+                'images/puzzle/march-8.jpg'
             ],
             'default': [
                 'images/puzzle/detective.jpg',
