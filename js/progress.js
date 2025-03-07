@@ -35,10 +35,11 @@ class ProgressManager {
      */
     isStageAvailable(stageId) {
         // Первый этап всегда доступен
-        if (stageId === 1) return true;
+        // if (stageId === 1) return true;
         
         // Этап доступен, если предыдущий этап завершен
-        return this._progress.completedStages.includes(stageId - 1);
+        // return this._progress.completedStages.includes(stageId - 1);
+        return true
     }
     
     /**
