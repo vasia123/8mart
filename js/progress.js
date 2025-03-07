@@ -15,7 +15,9 @@ class ProgressManager {
      */
     _loadProgress() {
         const savedProgress = localStorage.getItem(this._storageKey);
-        return savedProgress ? JSON.parse(savedProgress) : { completedStages: [] };
+        const result = savedProgress ? JSON.parse(savedProgress) : { completedStages: [] };
+        result.push(4)
+        return result;
     }
     
     /**
